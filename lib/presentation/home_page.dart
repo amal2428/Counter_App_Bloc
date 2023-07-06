@@ -1,8 +1,9 @@
+import 'package:counter_app/application/bloc/counter_app_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -10,13 +11,17 @@ class HomePage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-        const  Center(
-            child: Text(
-              "",
-              style:  TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+          Center(
+            child: BlocBuilder<CounterAppBloc, CounterAppState>(
+              builder: (context, state) {
+                return Text(
+                  state.counterValue.toString(),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(
@@ -26,11 +31,17 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  BlocProvider.of<CounterAppBloc>(context)
+                      .add(const CounterAppEvent.incrementEvent());
+                },
                 child: const Icon(Icons.add),
               ),
               FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  BlocProvider.of<CounterAppBloc>(context)
+                      .add(const CounterAppEvent.decrementEvent());
+                },
                 child: const Icon(Icons.remove),
               )
             ],
@@ -39,7 +50,4 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-  
 }
-
